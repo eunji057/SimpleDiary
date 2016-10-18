@@ -76,6 +76,6 @@ public class MainActivity extends AppCompatActivity {
         diaryContents=new String(txt);
         butSave.setText("수정하기");
 
-        return null;
+        return diaryContents;
     }
 }
