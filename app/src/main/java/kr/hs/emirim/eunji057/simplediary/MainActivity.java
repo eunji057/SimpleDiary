@@ -6,6 +6,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,15 +35,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 fileName=year+"_"+(monthOfYear+1)+"_"+dayOfMonth+".txt";
-                String content=readDiary(fileName);
+                String content= null;
+                try {
+                    content = readDiary(fileName);
+                } catch (IOException e) {
+                    editDiary.setHint("읽어올 일기가 없음 :(");
+                    butSave.setText("새로 저장");
+                }
                 editDiary.setText(content);
                 butSave.setEnabled(true);
             }
         });
     }
 
-    String readDiary(String fileName){
-
+    String readDiary(String fileName) throws IOException {
+        String diaryContents=null;
+        FileInputStream in=openFileInput(fileName);
+        byte[] txt=new byte[500];
+        in.read(txt);
+        in.close();
+        diaryContents=new String(txt);
+        butSave.setText("수정하기");
 
         return null;
     }
